@@ -249,7 +249,7 @@
             this.repositoryItemCheckEditEx5.Name = "repositoryItemCheckEditEx5";
             this.repositoryItemCheckEditEx5.ValueChecked = "Y";
             this.repositoryItemCheckEditEx5.ValueUnchecked = "N";
-            // 
+            //  
             // gridViewEx11
             // 
             this.gridViewEx11.ActionMode = JPlatform.Client.Controls6.ActionMode.View;

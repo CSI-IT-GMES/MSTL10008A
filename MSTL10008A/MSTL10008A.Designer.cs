@@ -50,6 +50,7 @@
             this.gridViewEx2 = new JPlatform.Client.Controls6.GridViewEx();
             this.gridViewEx3 = new JPlatform.Client.Controls6.GridViewEx();
             this.gridViewEx4 = new JPlatform.Client.Controls6.GridViewEx();
+            this.PRINT_CNT = new JPlatform.Client.Controls6.GridColumnEx();
             ((System.ComponentModel.ISupportInitialize)(this.FormMessages)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FoemComboInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BaseTextEditEx.Properties)).BeginInit();
@@ -136,6 +137,7 @@
             this.gridColumnEx67,
             this.gridColumnEx68,
             this.gridColumnEx69,
+            this.PRINT_CNT,
             this.gridColumnEx70});
             this.gvwLoc.GridControl = this.grdLoc;
             this.gvwLoc.Name = "gvwLoc";
@@ -230,14 +232,16 @@
             this.gridColumnEx70.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.gridColumnEx70.AppearanceHeader.Font = new System.Drawing.Font("Calibri", 12F);
             this.gridColumnEx70.AppearanceHeader.Options.UseFont = true;
-            this.gridColumnEx70.BindingField = "LAST_PRINT";
+            this.gridColumnEx70.BindingField = "PRINT_DT";
             this.gridColumnEx70.Caption = "Last Print Date";
             this.gridColumnEx70.ColumnEdit = null;
-            this.gridColumnEx70.FieldName = "LAST_PRINT";
+            this.gridColumnEx70.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.gridColumnEx70.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            this.gridColumnEx70.FieldName = "PRINT_DT";
             this.gridColumnEx70.Name = "gridColumnEx70";
             this.gridColumnEx70.Visible = true;
-            this.gridColumnEx70.VisibleIndex = 5;
-            this.gridColumnEx70.Width = 213;
+            this.gridColumnEx70.VisibleIndex = 6;
+            this.gridColumnEx70.Width = 261;
             // 
             // repositoryItemMemoEditEx1
             // 
@@ -249,7 +253,7 @@
             this.repositoryItemCheckEditEx5.Name = "repositoryItemCheckEditEx5";
             this.repositoryItemCheckEditEx5.ValueChecked = "Y";
             this.repositoryItemCheckEditEx5.ValueUnchecked = "N";
-            //  
+            // 
             // gridViewEx11
             // 
             this.gridViewEx11.ActionMode = JPlatform.Client.Controls6.ActionMode.View;
@@ -353,6 +357,22 @@
             this.gridViewEx4.ActionMode = JPlatform.Client.Controls6.ActionMode.View;
             this.gridViewEx4.Name = "gridViewEx4";
             // 
+            // PRINT_CNT
+            // 
+            this.PRINT_CNT.AppearanceCell.Options.UseTextOptions = true;
+            this.PRINT_CNT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.PRINT_CNT.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.PRINT_CNT.BindingField = "PRINT_CNT";
+            this.PRINT_CNT.Caption = "Again Print Times";
+            this.PRINT_CNT.ColumnEdit = null;
+            this.PRINT_CNT.DisplayFormat.FormatString = "{0:n0}";
+            this.PRINT_CNT.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.PRINT_CNT.FieldName = "PRINT_CNT";
+            this.PRINT_CNT.Name = "PRINT_CNT";
+            this.PRINT_CNT.Visible = true;
+            this.PRINT_CNT.VisibleIndex = 5;
+            this.PRINT_CNT.Width = 137;
+            // 
             // MSTL10008A
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -412,6 +432,7 @@
         private JPlatform.Client.Controls6.RepositoryItemMemoEditEx repositoryItemMemoEditEx1;
         private JPlatform.Client.Controls6.RepositoryItemCheckEditEx repositoryItemCheckEditEx5;
         private JPlatform.Client.Controls6.GridViewEx gridViewEx11;
+        private JPlatform.Client.Controls6.GridColumnEx PRINT_CNT;
     }
 }
 

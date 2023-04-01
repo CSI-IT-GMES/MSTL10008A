@@ -2,6 +2,8 @@
 using DevExpress.Utils;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraPrinting;
+using DevExpress.XtraPrinting.Control;
 using DevExpress.XtraReports.UI;
 using JPlatform.Client.Controls6;
 using JPlatform.Client.CSIGMESBaseform6;
@@ -28,6 +30,7 @@ namespace CSI.GMES.TL
         }
 
         DataTable dtSelection = new DataTable();
+        public static bool isPrinted = false;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -95,19 +98,86 @@ namespace CSI.GMES.TL
                     dtSelection.Rows.Add(row.ItemArray);
                 }
 
-               QRCodePrint xr = new QRCodePrint();
+                QRCodePrint xr = new QRCodePrint();
                 xr.DataSource = dtSelection;
                 using (ReportPrintTool printTool = new ReportPrintTool(xr))
                 {
+                    //  printTool.ShowRibbonPreviewDialog();
+                    // Generate the report's document to access its Printing System.
+                    isPrinted = false;
+                    printTool.Report.CreateDocument(false);
+
+                    // Override the ExportGraphic command.
+                    printTool.PrintingSystem.AddCommandHandler(new PrintCommandHandler(printTool));
+
+                    // Show the report's Print Preview in a dialog window.
                     printTool.ShowRibbonPreviewDialog();
+
+                    if (isPrinted)
+                    {
+                        P_MSTL10008A_S cProc = new P_MSTL10008A_S("P_MSTL10008A_S");
+                        DataTable dtData = null;
+
+                        string FactoryCode = cboFac.EditValue.ToString();
+                        string PlantCode = cboPlant.EditValue.ToString();
+
+                        foreach (DataRow dr in dtSelection.Rows)
+                        {
+                            string PrintID = Guid.NewGuid().ToString();
+                            dtData = cProc.SetParamData(dtData, "S", PrintID, dr["LOCATED"].ToString(), pbGetClientInfo());
+                        }
+                        bool rs = CommonProcessQuery(dtData, cProc.ProcName, cProc.GetParamInfo(), null);
+                        if (!rs)
+                        {
+                            MessageBoxW("Print Error!", IconType.Error);
+                        }
+                    }
                 }
+
+
             }
             catch (Exception ex)
             {
 
                 throw ex;
             }
-           
+
+        }
+
+        public class PrintCommandHandler : DevExpress.XtraPrinting.ICommandHandler
+        {
+            private readonly ReportPrintTool _reportPrintTool;
+            public PrintCommandHandler(ReportPrintTool reportPrintTool)
+            {
+                _reportPrintTool = reportPrintTool;
+                _reportPrintTool.PrintingSystem.SetCommandVisibility(PrintingSystemCommand.Watermark, CommandVisibility.None);
+            }
+
+            public virtual void HandleCommand(PrintingSystemCommand command,
+            object[] args, IPrintControl control, ref bool handled)
+            {
+                if (!CanHandleCommand(command, control)) return;
+
+                if (command == PrintingSystemCommand.Print)
+                {
+                    if (_reportPrintTool.PrintDialog().Value)
+                        handled = MSTL10008A.isPrinted = true;
+                }
+                else if (command == PrintingSystemCommand.PrintDirect)
+                {
+                    if (_reportPrintTool.PrintDialog().Value)
+                    {
+                        handled = MSTL10008A.isPrinted = true;
+                    }
+                }
+
+            }
+            public virtual bool CanHandleCommand(PrintingSystemCommand command, IPrintControl control)
+            {
+                // This handler is used for the ExportGraphic command.  
+                return command == PrintingSystemCommand.Print || command == PrintingSystemCommand.PrintDirect;
+
+            }
         }
         #region Set Format
 

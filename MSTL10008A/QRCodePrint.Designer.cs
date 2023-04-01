@@ -30,11 +30,11 @@
         {
             DevExpress.XtraPrinting.BarCode.QRCodeGenerator qrCodeGenerator1 = new DevExpress.XtraPrinting.BarCode.QRCodeGenerator();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.dsQRPrint1 = new CSI.GMES.TL.dsQRPrint();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.xrBarCode1 = new DevExpress.XtraReports.UI.XRBarCode();
             ((System.ComponentModel.ISupportInitialize)(this.dsQRPrint1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
@@ -48,27 +48,6 @@
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
             this.Detail.StylePriority.UseTextAlignment = false;
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
-            // 
-            // TopMargin
-            // 
-            this.TopMargin.Dpi = 96F;
-            this.TopMargin.HeightF = 10F;
-            this.TopMargin.Name = "TopMargin";
-            this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // BottomMargin
-            // 
-            this.BottomMargin.Dpi = 96F;
-            this.BottomMargin.HeightF = 10F;
-            this.BottomMargin.Name = "BottomMargin";
-            this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
-            this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // dsQRPrint1
-            // 
-            this.dsQRPrint1.DataSetName = "dsQRPrint";
-            this.dsQRPrint1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // xrBarCode1
             // 
@@ -90,6 +69,27 @@
             this.xrBarCode1.Symbology = qrCodeGenerator1;
             this.xrBarCode1.Text = "123";
             this.xrBarCode1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.BottomCenter;
+            // 
+            // TopMargin
+            // 
+            this.TopMargin.Dpi = 96F;
+            this.TopMargin.HeightF = 10F;
+            this.TopMargin.Name = "TopMargin";
+            this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
+            this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // BottomMargin
+            // 
+            this.BottomMargin.Dpi = 96F;
+            this.BottomMargin.HeightF = 10F;
+            this.BottomMargin.Name = "BottomMargin";
+            this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 96F);
+            this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // dsQRPrint1
+            // 
+            this.dsQRPrint1.DataSetName = "dsQRPrint";
+            this.dsQRPrint1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // QRCodePrint
             // 

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsQRPrint" targetNamespace="http://tempuri.org/dsQRPrint.xsd" xmlns:mstns="http://tempuri.org/dsQRPrint.xsd" xmlns="http://tempuri.org/dsQRPrint.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsQRPrint" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsQRPrint" msprop:Generator_UserDSName="dsQRPrint">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtQR" msprop:Generator_TableClassName="dtQRDataTable" msprop:Generator_TableVarName="tabledtQR" msprop:Generator_RowChangedName="dtQRRowChanged" msprop:Generator_TablePropName="dtQR" msprop:Generator_RowDeletingName="dtQRRowDeleting" msprop:Generator_RowChangingName="dtQRRowChanging" msprop:Generator_RowEvHandlerName="dtQRRowChangeEventHandler" msprop:Generator_RowDeletedName="dtQRRowDeleted" msprop:Generator_RowClassName="dtQRRow" msprop:Generator_UserTableName="dtQR" msprop:Generator_RowEvArgName="dtQRRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LOCATED" msprop:Generator_ColumnVarNameInTable="columnLOCATED" msprop:Generator_ColumnPropNameInRow="LOCATED" msprop:Generator_ColumnPropNameInTable="LOCATEDColumn" msprop:Generator_UserColumnName="LOCATED" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

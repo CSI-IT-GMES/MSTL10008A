@@ -37,6 +37,7 @@
             this.gridColumnEx67 = new JPlatform.Client.Controls6.GridColumnEx();
             this.gridColumnEx68 = new JPlatform.Client.Controls6.GridColumnEx();
             this.gridColumnEx69 = new JPlatform.Client.Controls6.GridColumnEx();
+            this.PRINT_CNT = new JPlatform.Client.Controls6.GridColumnEx();
             this.gridColumnEx70 = new JPlatform.Client.Controls6.GridColumnEx();
             this.repositoryItemMemoEditEx1 = new JPlatform.Client.Controls6.RepositoryItemMemoEditEx();
             this.repositoryItemCheckEditEx5 = new JPlatform.Client.Controls6.RepositoryItemCheckEditEx();
@@ -50,7 +51,6 @@
             this.gridViewEx2 = new JPlatform.Client.Controls6.GridViewEx();
             this.gridViewEx3 = new JPlatform.Client.Controls6.GridViewEx();
             this.gridViewEx4 = new JPlatform.Client.Controls6.GridViewEx();
-            this.PRINT_CNT = new JPlatform.Client.Controls6.GridColumnEx();
             ((System.ComponentModel.ISupportInitialize)(this.FormMessages)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FoemComboInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BaseTextEditEx.Properties)).BeginInit();
@@ -146,11 +146,15 @@
             this.gvwLoc.OptionsSelection.InvertSelection = true;
             this.gvwLoc.OptionsSelection.MultiSelect = true;
             this.gvwLoc.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+            this.gvwLoc.OptionsView.AutoCalcPreviewLineCount = true;
             this.gvwLoc.OptionsView.ColumnAutoWidth = false;
+            this.gvwLoc.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.False;
             this.gvwLoc.OptionsView.EnableAppearanceEvenRow = true;
             this.gvwLoc.OptionsView.ShowAutoFilterRow = true;
+            this.gvwLoc.OptionsView.ShowFooter = true;
             this.gvwLoc.OptionsView.ShowGroupPanel = false;
             this.gvwLoc.RowHeight = 30;
+            this.gvwLoc.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gvwLoc_CustomUnboundColumnData);
             // 
             // gridColumnEx66
             // 
@@ -168,7 +172,7 @@
             this.gridColumnEx66.Name = "gridColumnEx66";
             this.gridColumnEx66.Visible = true;
             this.gridColumnEx66.VisibleIndex = 1;
-            this.gridColumnEx66.Width = 72;
+            this.gridColumnEx66.Width = 60;
             // 
             // gridColumnEx67
             // 
@@ -186,7 +190,7 @@
             this.gridColumnEx67.Name = "gridColumnEx67";
             this.gridColumnEx67.Visible = true;
             this.gridColumnEx67.VisibleIndex = 2;
-            this.gridColumnEx67.Width = 71;
+            this.gridColumnEx67.Width = 58;
             // 
             // gridColumnEx68
             // 
@@ -204,10 +208,13 @@
             this.gridColumnEx68.Name = "gridColumnEx68";
             this.gridColumnEx68.Visible = true;
             this.gridColumnEx68.VisibleIndex = 3;
+            this.gridColumnEx68.Width = 55;
             // 
             // gridColumnEx69
             // 
-            this.gridColumnEx69.AppearanceCell.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumnEx69.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.gridColumnEx69.AppearanceCell.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gridColumnEx69.AppearanceCell.Options.UseBackColor = true;
             this.gridColumnEx69.AppearanceCell.Options.UseFont = true;
             this.gridColumnEx69.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnEx69.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -219,9 +226,27 @@
             this.gridColumnEx69.ColumnEdit = null;
             this.gridColumnEx69.FieldName = "LOCATED";
             this.gridColumnEx69.Name = "gridColumnEx69";
+            this.gridColumnEx69.Summary.AddRange(new DevExpress.XtraGrid.GridSummaryItem[] {
+            new DevExpress.XtraGrid.GridColumnSummaryItem(DevExpress.Data.SummaryItemType.Count, "LOCATED", "Total QR Code: {0:n0}")});
             this.gridColumnEx69.Visible = true;
             this.gridColumnEx69.VisibleIndex = 4;
-            this.gridColumnEx69.Width = 127;
+            this.gridColumnEx69.Width = 172;
+            // 
+            // PRINT_CNT
+            // 
+            this.PRINT_CNT.AppearanceCell.Options.UseTextOptions = true;
+            this.PRINT_CNT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.PRINT_CNT.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.PRINT_CNT.BindingField = "PRINT_CNT";
+            this.PRINT_CNT.Caption = "Print Count";
+            this.PRINT_CNT.ColumnEdit = null;
+            this.PRINT_CNT.DisplayFormat.FormatString = "{0:n0}";
+            this.PRINT_CNT.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.PRINT_CNT.FieldName = "PRINT_CNT";
+            this.PRINT_CNT.Name = "PRINT_CNT";
+            this.PRINT_CNT.Visible = true;
+            this.PRINT_CNT.VisibleIndex = 5;
+            this.PRINT_CNT.Width = 137;
             // 
             // gridColumnEx70
             // 
@@ -356,22 +381,6 @@
             // 
             this.gridViewEx4.ActionMode = JPlatform.Client.Controls6.ActionMode.View;
             this.gridViewEx4.Name = "gridViewEx4";
-            // 
-            // PRINT_CNT
-            // 
-            this.PRINT_CNT.AppearanceCell.Options.UseTextOptions = true;
-            this.PRINT_CNT.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.PRINT_CNT.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
-            this.PRINT_CNT.BindingField = "PRINT_CNT";
-            this.PRINT_CNT.Caption = "Again Print Times";
-            this.PRINT_CNT.ColumnEdit = null;
-            this.PRINT_CNT.DisplayFormat.FormatString = "{0:n0}";
-            this.PRINT_CNT.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.PRINT_CNT.FieldName = "PRINT_CNT";
-            this.PRINT_CNT.Name = "PRINT_CNT";
-            this.PRINT_CNT.Visible = true;
-            this.PRINT_CNT.VisibleIndex = 5;
-            this.PRINT_CNT.Width = 137;
             // 
             // MSTL10008A
             // 

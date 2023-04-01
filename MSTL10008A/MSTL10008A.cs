@@ -1,8 +1,14 @@
 ﻿using CSI.GMES.PD;
+using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraPrinting;
+using DevExpress.XtraPrinting.BarCode;
 using DevExpress.XtraPrinting.Control;
 using DevExpress.XtraReports.UI;
 using JPlatform.Client.Controls6;
@@ -28,8 +34,9 @@ namespace CSI.GMES.TL
         {
             InitializeComponent();
         }
-
+        ToolTipController toolTipController;
         DataTable dtSelection = new DataTable();
+        BarCodeControl barCodeControl1;
         public static bool isPrinted = false;
         protected override void OnLoad(EventArgs e)
         {
@@ -43,11 +50,145 @@ namespace CSI.GMES.TL
             PrintButton = true;
             NewButton = false;
             DeleteRowButton = false;
-
+            toolTipController = new ToolTipController();
             //Binding Combo
             pbSetLookUp(cboFac, "", "L_COM_FACTORY", "");
+
+            #region BarCodeControl initialization
+            barCodeControl1 = new BarCodeControl();
+            barCodeControl1.Size = new System.Drawing.Size(150, 150);
+            barCodeControl1.AutoModule = true;
+            barCodeControl1.HorizontalAlignment = HorzAlignment.Center;
+            barCodeControl1.VerticalAlignment = VertAlignment.Center;
+            barCodeControl1.HorizontalTextAlignment = HorzAlignment.Center;
+            barCodeControl1.VerticalTextAlignment = VertAlignment.Bottom;
+            QRCodeGenerator symb = new QRCodeGenerator();
+            barCodeControl1.Symbology = symb;
+            symb.CompactionMode = QRCodeCompactionMode.Byte;
+            symb.ErrorCorrectionLevel = QRCodeErrorCorrectionLevel.H;
+            symb.Version = QRCodeVersion.AutoVersion;
+            #endregion
+
+            AddUnboundColumn(gvwLoc);
+            GridColumnEx QR_COLUM = gvwLoc.Columns["QR_CODE"];
+            AssignPictureEdittoImageColumn(QR_COLUM);
+
+            toolTipController.GetActiveObjectInfo += ToolTipController_GetActiveObjectInfo;
+            grdLoc.ToolTipController = toolTipController;
+
+        }
+        internal Image ScaleThumbnailImage(Image ImageToScale, int MaxWidth, int MaxHeight)
+        {
+            double ratioX = (double)MaxWidth / ImageToScale.Width;
+            double ratioY = (double)MaxHeight / ImageToScale.Height;
+            double ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(ImageToScale.Width * ratio);
+            int newHeight = (int)(ImageToScale.Height * ratio);
+
+            Image newImage = new Bitmap(newWidth, newHeight);
+            Graphics.FromImage(newImage).DrawImage(ImageToScale, 0, 0, newWidth, newHeight);
+
+            return newImage;
+        }
+        private void ToolTipController_GetActiveObjectInfo(object sender, ToolTipControllerGetActiveObjectInfoEventArgs e)
+        {
+            try
+            {
+                if (e.SelectedControl != grdLoc)
+                    return;
+                GridView view = sender as GridView;
+                GridHitInfo hitInfo = gvwLoc.CalcHitInfo(e.ControlMousePosition);
+                if (hitInfo.InRow == false)
+                    return;
+                if (hitInfo.Column == null) return;
+                if (hitInfo.Column.FieldName.Equals("QR_CODE"))
+                {
+
+                    SuperToolTipSetupArgs toolTipArgs = new SuperToolTipSetupArgs();
+
+                    toolTipArgs.Title.Text = "QR Code";
+                    toolTipArgs.Contents.Image = ScaleThumbnailImage(GetQRCodeImageForTooltip(gvwLoc, hitInfo.RowHandle),200, 200);
+                    toolTipArgs.Footer.Text = "Jit Small Tooling Location QR code printing";
+                    e.Info = new ToolTipControlInfo();
+                    e.Info.Object = hitInfo.HitTest.ToString() + hitInfo.RowHandle.ToString();
+                    e.Info.ToolTipType = ToolTipType.SuperTip;
+                    e.Info.SuperTip = new SuperToolTip();
+                    e.Info.SuperTip.Padding = new System.Windows.Forms.Padding(1);
+                    e.Info.ImmediateToolTip = true;
+                    e.Info.ToolTipImage = GetQRCodeImageForTooltip(gvwLoc, hitInfo.RowHandle);
+                    e.Info.SuperTip.Setup(toolTipArgs);
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
+        void AddUnboundColumn(GridView view)
+        {
+            // Create an unbound column.
+            GridColumnEx colImage = new GridColumnEx();
+            colImage.FieldName = "QR_CODE";
+            colImage.Caption = "QR Code";
+            colImage.UnboundType = UnboundColumnType.Object;
+            colImage.OptionsColumn.AllowEdit = false;
+            colImage.Visible = true;
+
+            // Add the Image column to the grid's Columns collection.
+            view.Columns.Add(colImage);
+        }
+
+        void AssignPictureEdittoImageColumn(GridColumn column)
+        {
+            // Create and customize the PictureEdit repository item.
+            RepositoryItemPictureEdit riPictureEdit = new RepositoryItemPictureEdit();
+            riPictureEdit.SizeMode = PictureSizeMode.Zoom;
+
+            // Add the PictureEdit to the grid's RepositoryItems collection.
+            grdLoc.RepositoryItems.Add(riPictureEdit);
+
+            // Assign the PictureEdit to the 'Image' column.
+            column.ColumnEdit = riPictureEdit;
+        }
+
+        private object GetQRCodeImage(GridView view, int listRowSourceIndex)
+        {
+            //generating an image for the cell
+            string text = view.GetRowCellDisplayText(listRowSourceIndex, "LOCATED");
+            barCodeControl1.Text = text;
+            Bitmap image = new Bitmap(150, 150);
+            barCodeControl1.DrawToBitmap(image, new Rectangle(new Point(), new Size(image.Width, image.Height)));
+            return image;
+        }
+
+        private Image GetQRCodeImageForTooltip(GridView view, int listRowSourceIndex)
+        {
+            try
+            {
+                string text = view.GetRowCellDisplayText(listRowSourceIndex, "LOCATED");
+                barCodeControl1.Text = text;
+                Bitmap image = new Bitmap(150, 150);
+                barCodeControl1.DrawToBitmap(image, new Rectangle(new Point(), new Size(image.Width, image.Height)));
+                return image;
+            }
+            catch
+            {
+                return null;
+            }
+            //generating an image for the cell
+            
+        }
+
+        void gvwLoc_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+            GridView view = sender as GridView;
+            if (e.Column.FieldName == "QR_CODE" && e.IsGetData)
+                e.Value = GetQRCodeImage(view, e.ListSourceRowIndex);
+        }
 
         public override void QueryClick()
         {
@@ -55,6 +196,7 @@ namespace CSI.GMES.TL
             try
             {
                 pbProgressShow();
+                grdLoc.DataSource = null;
                 P_MSTL10008A_Q cProc = new P_MSTL10008A_Q("P_MSTL10008A_Q");
                 DataTable dtData = null;
 
@@ -105,9 +247,7 @@ namespace CSI.GMES.TL
                     //  printTool.ShowRibbonPreviewDialog();
                     // Generate the report's document to access its Printing System.
                     isPrinted = false;
-                    printTool.Report.CreateDocument(false);
-
-                    // Override the ExportGraphic command.
+                    // Override the PrintCommandHandler command.
                     printTool.PrintingSystem.AddCommandHandler(new PrintCommandHandler(printTool));
 
                     // Show the report's Print Preview in a dialog window.
@@ -147,6 +287,7 @@ namespace CSI.GMES.TL
         public class PrintCommandHandler : DevExpress.XtraPrinting.ICommandHandler
         {
             private readonly ReportPrintTool _reportPrintTool;
+            private bool _isExecuted;
             public PrintCommandHandler(ReportPrintTool reportPrintTool)
             {
                 _reportPrintTool = reportPrintTool;
@@ -156,20 +297,34 @@ namespace CSI.GMES.TL
             public virtual void HandleCommand(PrintingSystemCommand command,
             object[] args, IPrintControl control, ref bool handled)
             {
-                if (!CanHandleCommand(command, control)) return;
+                if (_isExecuted || !CanHandleCommand(command, control)) return;
 
+                var printingSystem = _reportPrintTool.PrintingSystem;
                 if (command == PrintingSystemCommand.Print)
                 {
                     if (_reportPrintTool.PrintDialog().Value)
-                        handled = MSTL10008A.isPrinted = true;
+                        MSTL10008A.isPrinted = true;
                 }
                 else if (command == PrintingSystemCommand.PrintDirect)
                 {
                     if (_reportPrintTool.PrintDialog().Value)
-                    {
-                        handled = MSTL10008A.isPrinted = true;
-                    }
+                        MSTL10008A.isPrinted = true;
                 }
+                else
+                    try
+                    {
+                        _isExecuted = true;
+
+                        printingSystem.ExecCommand(command);
+                    }
+                    finally
+                    {
+                        _isExecuted = false;
+                    }
+
+
+
+                handled = true;
 
             }
             public virtual bool CanHandleCommand(PrintingSystemCommand command, IPrintControl control)
@@ -240,7 +395,8 @@ namespace CSI.GMES.TL
 
         private void cboFac_EditValueChanged(object sender, EventArgs e)
         {
-            pbSetLookUp(cboPlant, "", "L_COMP_DEPT_MSTL10008A", "PLANT_CD='2110'");
+
+            pbSetLookUp(cboPlant, "", "L_COMP_DEPT_MSTL10008A", "PLANT_CD='"+ cboFac.EditValue.ToString()+ "'");
         }
 
 
